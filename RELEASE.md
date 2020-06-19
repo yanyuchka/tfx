@@ -10,6 +10,9 @@
 
 ### For pipeline authors
 
+*   Added BigQueryToElwcExampleGen to take a query as input and generate
+    ELWC(ExampleListAsContext) examples.
+
 ### For component authors
 
 ## Deprecations
