@@ -19,6 +19,7 @@
     implementation in a future release.
 *   Added support for passing a callable to set pre/post transform statistic
     generation options.
+*   Migrate LocalDagRunner to the new [IR](https://github.com/tensorflow/tfx/blob/master/tfx/proto/orchestration/pipeline.proto) stack.
 
 ## Breaking changes
 *   Wheel package building for TFX has changed, and users need to follow the
