@@ -65,8 +65,7 @@ class TFLiteRewriterTest(tf.test.TestCase):
     tfrw.perform_rewrite(src_model, dst_model)
 
     converter.assert_called_once_with(
-        saved_model_path=mock.ANY,
-        enable_quantization=False)
+        saved_model_path=mock.ANY, quantization_type=None, input_data=None)
     expected_model = os.path.join(dst_model_path, 'fname')
     self.assertTrue(fileio.exists(expected_model))
     with fileio.open(expected_model, 'rb') as f:
@@ -106,12 +105,13 @@ class TFLiteRewriterTest(tf.test.TestCase):
     tfrw = tflite_rewriter.TFLiteRewriter(
         name='myrw',
         filename='fname',
-        enable_quantization=True)
+        quantization_type=tflite_rewriter.QuantizationType.DYNAMIC_RANGE)
     tfrw.perform_rewrite(src_model, dst_model)
 
     converter.assert_called_once_with(
         saved_model_path=mock.ANY,
-        enable_quantization=True)
+        quantization_type=tflite_rewriter.QuantizationType.DYNAMIC_RANGE,
+        input_data=None)
     expected_model = os.path.join(dst_model_path, 'fname')
     self.assertTrue(fileio.exists(expected_model))
     with fileio.open(expected_model, 'rb') as f:
