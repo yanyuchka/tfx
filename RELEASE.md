@@ -49,6 +49,8 @@
 *   Depends on `keras-tuner>=1,<1.0.2`.
 *   Depends on `tensorflow>=1.15.2,!=2.0.*,!=2.1.*,!=2.2.*,!=2.4.*,<3`.
 *   Depends on 'kfp-pipeline-spec>=0.1.3,<0.2'.
+*   Fixed the component entrypoint, so that it creates the parent directory for
+    the output metadata file before trying to write the data.
 
 ## Documentation updates
 
