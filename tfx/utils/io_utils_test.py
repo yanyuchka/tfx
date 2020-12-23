@@ -121,6 +121,12 @@ class IoUtilsTest(tf.test.TestCase):
     io_utils.delete_dir(os.path.dirname(file_path))
     self.assertFalse(fileio.exists(file_path))
 
+  def testFilesPattern(self):
+    self.assertEqual('model/*tfrecord*',
+                     io_utils.files_pattern('model'))
+    self.assertEqual('model/pattern',
+                     io_utils.files_pattern('model', 'pattern'))
+
   def testAllFilesPattern(self):
     self.assertEqual('model/*', io_utils.all_files_pattern('model'))
 

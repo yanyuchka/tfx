@@ -101,7 +101,7 @@ class Executor(base_executor.BaseExecutor):
     with self._make_beam_pipeline() as pipeline:
       eval_data = (
           pipeline | 'ReadData' >> beam.io.ReadFromTFRecord(
-              file_pattern=io_utils.all_files_pattern(eval_examples_uri)))
+              file_pattern=io_utils.files_pattern(eval_examples_uri)))
 
       current_model = tfma.default_eval_shared_model(
           eval_saved_model_path=path_utils.eval_model_path(current_model_dir))

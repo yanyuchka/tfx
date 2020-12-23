@@ -366,7 +366,7 @@ class Executor(base_executor.BaseExecutor):
     for split in splits_config.analyze:
       data_uris = artifact_utils.get_split_uris(input_dict[EXAMPLES_KEY], split)
       for data_uri in data_uris:
-        analyze_data_paths.append(io_utils.all_files_pattern(data_uri))
+        analyze_data_paths.append(io_utils.files_pattern(data_uri))
 
     transform_data_paths = []
     materialize_output_paths = []
@@ -379,7 +379,7 @@ class Executor(base_executor.BaseExecutor):
         data_uris = artifact_utils.get_split_uris(input_dict[EXAMPLES_KEY],
                                                   split)
         for data_uri in data_uris:
-          transform_data_paths.append(io_utils.all_files_pattern(data_uri))
+          transform_data_paths.append(io_utils.files_pattern(data_uri))
 
         transformed_example_uris = artifact_utils.get_split_uris(
             output_dict[TRANSFORMED_EXAMPLES_KEY], split)
