@@ -134,7 +134,7 @@ def get_common_fn_args(input_dict: Dict[Text, List[types.Artifact]],
   train_files = []
   for train_split in train_args.splits:
     train_files.extend([
-        io_utils.files_pattern(uri)
+        io_utils.all_files_pattern(uri)
         for uri in artifact_utils.get_split_uris(
             input_dict[constants.EXAMPLES_KEY], train_split)
     ])
@@ -142,7 +142,7 @@ def get_common_fn_args(input_dict: Dict[Text, List[types.Artifact]],
   eval_files = []
   for eval_split in eval_args.splits:
     eval_files.extend([
-        io_utils.files_pattern(uri)
+        io_utils.all_files_pattern(uri)
         for uri in artifact_utils.get_split_uris(
             input_dict[constants.EXAMPLES_KEY], eval_split)
     ])

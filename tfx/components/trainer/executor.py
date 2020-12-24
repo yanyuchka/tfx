@@ -46,6 +46,10 @@ TrainerFnArgs = deprecation_utils.deprecated_alias(  # pylint: disable=invalid-n
     func_or_class=fn_args_utils.FnArgs)
 
 
+def _all_files_pattern(file_pattern: Text) -> Text:
+  return os.path.join(file_pattern, '*')
+
+
 def _is_chief():
   """Returns true if this is run in the master (chief) of training cluster."""
   tf_config = json.loads(os.environ.get(constants.TF_CONFIG_ENV) or '{}')
