@@ -117,6 +117,16 @@ class IoUtilsTest(tf.test.TestCase):
       f'Only one file per dir is supported: {dir_path}.'):
       io_utils.get_only_uri_in_dir(dir_path)
 
+  def testGetOnlyFileInDirMultipleFilesWithPattern(self):
+    dir_path = os.path.join(self._base_dir, 'path')
+    file_path = os.path.join(dir_path, 'file')
+    another_file_path = os.path.join(dir_path, 'another_file')
+    io_utils.write_string_file(file_path, 'testing')
+    io_utils.write_string_file(another_file_path, 'testing')
+    self.assertEqual(file_path,
+                     io_utils.get_only_uri_in_dir(os.path.dirname(file_path),
+                                                  'file'))
+
   def testGetOnlyDirInDir(self):
     top_level_dir = os.path.join(self._base_dir, 'dir_1')
     dir_path = os.path.join(top_level_dir, 'dir_2')

@@ -78,15 +78,23 @@ def copy_dir(src: Text, dst: Text) -> None:
       fileio.makedirs(os.path.join(dir_name.replace(src, dst, 1), sub_dir))
 
 
-def get_only_uri_in_dir(dir_path: Text) -> Text:
-  """Gets the only uri from given directory."""
+def get_only_uri_in_dir(dir_path: Text, uri_pattern: Text = None) -> Text:
+  """Gets the only uri from given directory.
+    If no `uri_pattern` specified, a single file is expected to be found
+    in `dir_path`.
+  """
 
-  files = fileio.listdir(dir_path)
+  if uri_pattern is None:
+    uri_path = all_files_pattern(dir_path)
+  else:
+    uri_path = files_pattern(dir_path, uri_pattern)
+
+  files = fileio.glob(uri_path)
   if len(files) != 1:
     raise RuntimeError(
-        'Only one file per dir is supported: {}.'.format(dir_path))
+      'Only one file per dir is supported: {}.'.format(uri_path))
   filename = os.path.dirname(os.path.join(files[0], ''))
-  return os.path.join(dir_path, filename)
+  return os.path.join(uri_path, filename)
 
 
 def delete_dir(path: Text) -> None:
