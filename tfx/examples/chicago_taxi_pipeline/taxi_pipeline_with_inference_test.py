@@ -35,9 +35,9 @@ class TaxiPipelineWithInferenceTest(tf.test.TestCase):
     logical_pipeline = taxi_pipeline_with_inference._create_pipeline(
         pipeline_name='Test',
         pipeline_root=self._test_dir,
-        data_root=self._test_dir,
+        training_data_root=self._test_dir,
+        inference_data_root=self._test_dir,
         module_file=self._test_dir,
-        serving_model_dir=self._test_dir,
         metadata_path=self._test_dir,
         beam_pipeline_args=[])
-    self.assertEqual(9, len(logical_pipeline.components))
+    self.assertEqual(10, len(logical_pipeline.components))
