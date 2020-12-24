@@ -101,10 +101,21 @@ class IoUtilsTest(tf.test.TestCase):
     self.assertTrue(file_io.file_exists(new_path_file2))
 
   def testGetOnlyFileInDir(self):
-    file_path = os.path.join(self._base_dir, 'file', 'path')
+    file_path = os.path.join(self._base_dir, 'path', 'file')
     io_utils.write_string_file(file_path, 'testing')
     self.assertEqual(file_path,
                      io_utils.get_only_uri_in_dir(os.path.dirname(file_path)))
+
+  def testGetOnlyFileInDirMultipleFiles(self):
+    dir_path = os.path.join(self._base_dir, 'path')
+    file_path = os.path.join(dir_path, 'file')
+    another_file_path = os.path.join(dir_path, 'another_file')
+    io_utils.write_string_file(file_path, 'testing')
+    io_utils.write_string_file(another_file_path, 'testing')
+    with self.assertRaisesRegexp(
+      RuntimeError,
+      f'Only one file per dir is supported: {dir_path}.'):
+      io_utils.get_only_uri_in_dir(dir_path)
 
   def testGetOnlyDirInDir(self):
     top_level_dir = os.path.join(self._base_dir, 'dir_1')
