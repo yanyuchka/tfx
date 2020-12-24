@@ -37,7 +37,7 @@ NANO_PER_SEC = 1000 * 1000 * 1000
 # If path starts with one of those, consider files are in remote filesystem.
 _REMOTE_FS_PREFIX = ['gs://', 'hdfs://', 's3://']
 
-TFRECORD_FILE_PATTERN = '*tfrecord*'
+TFRECORD_FILES_PATTERN = '*tfrecord*'
 
 def ensure_local(file_path: Text) -> Text:
   """Ensures that the given file path is made available locally."""
@@ -141,14 +141,19 @@ def load_csv_column_names(csv_file: Text) -> List[Text]:
     return f.readline().strip().split(',')
 
 
-def files_pattern(file_path: Text,
-                  pattern: Text = TFRECORD_FILE_PATTERN) -> Text:
-  return os.path.join(file_path, pattern)
+def files_pattern(files_path: Text,
+                  pattern: Text = None) -> Text:
+  """Returns file paths suitable for Beam to locate files based on a pattern.
+       file_path/*tfrecord* file path pattern will be returned by default.
+  """
+  if pattern is None:
+    pattern = TFRECORD_FILES_PATTERN
+  return os.path.join(files_path, pattern)
 
 
-def all_files_pattern(file_pattern: Text) -> Text:
+def all_files_pattern(files_path: Text) -> Text:
   """Returns file pattern suitable for Beam to locate multiple files."""
-  return files_pattern(file_pattern, '*')
+  return files_pattern(files_path, '*')
 
 
 def generate_fingerprint(split_name: Text, file_pattern: Text) -> Text:

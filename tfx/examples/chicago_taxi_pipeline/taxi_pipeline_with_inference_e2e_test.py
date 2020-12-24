@@ -82,16 +82,16 @@ class TaxiPipelineWithInferenceEndToEndTest(tf.test.TestCase,
     self.assertExecutedOnce('Trainer')
     self.assertExecutedOnce('Transform')
 
-  def testTaxiPipelineBeam(self):
+  def testTaxiPipelineWithInference(self):
     BeamDagRunner().run(
-            taxi_pipeline_with_inference._create_pipeline( # pylint: disable=protected-access
-            pipeline_name=self._pipeline_name,
-            training_data_root=self._training_data_root,
-            inference_data_root=self._inference_data_root,
-            module_file=self._module_file,
-            pipeline_root=self._pipeline_root,
-            metadata_path=self._metadata_path,
-            beam_pipeline_args=[]))
+      taxi_pipeline_with_inference._create_pipeline( # pylint: disable=protected-access
+      pipeline_name=self._pipeline_name,
+      training_data_root=self._training_data_root,
+      inference_data_root=self._inference_data_root,
+      module_file=self._module_file,
+      pipeline_root=self._pipeline_root,
+      metadata_path=self._metadata_path,
+      beam_pipeline_args=[]))
 
     self.assertTrue(fileio.exists(self._metadata_path))
 
@@ -105,7 +105,6 @@ class TaxiPipelineWithInferenceEndToEndTest(tf.test.TestCase,
       self.assertEqual(10, execution_count)
 
     self.assertPipelineExecution()
-
 
 if __name__ == '__main__':
   tf.test.main()
