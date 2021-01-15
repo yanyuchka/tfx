@@ -27,6 +27,7 @@ from tfx.dsl.io import fileio
 from tfx.utils import io_utils
 
 from tensorflow.python.lib.io import file_io  # pylint: disable=g-direct-tensorflow-import
+from tensorflow_metadata.proto.v0 import schema_pb2
 
 
 class IoUtilsTest(tf.test.TestCase):
@@ -178,6 +179,65 @@ class IoUtilsTest(tf.test.TestCase):
     io_utils.write_string_file(file_path, content)
     read_content = io_utils.read_string_file(file_path)
     self.assertEqual(content, read_content)
+
+  def testSchemaReader(self):
+    schema_path = os.path.join(self._base_dir, 'schema_path')
+    schema_file_path = os.path.join(schema_path, 'schema.pbtxt')
+    io_utils.write_string_file(schema_file_path, "feature { name: 'test'}")
+
+    schema_proto_from_file = io_utils.SchemaReader().read(schema_file_path)
+    self.assertEqual('test', schema_proto_from_file.feature[0].name)
+
+    schema_proto_from_path = io_utils.SchemaReader().read(schema_path)
+    self.assertEqual('test', schema_proto_from_path.feature[0].name)
+
+  def testSchemaReaderNoExtension(self):
+    schema_path = os.path.join(self._base_dir, 'schema_path')
+    schema_file_path = os.path.join(schema_path, 'schema')
+    io_utils.write_string_file(schema_file_path, "feature { name: 'test'}")
+    schema_proto = io_utils.SchemaReader().read(schema_file_path)
+    self.assertEqual('test', schema_proto.feature[0].name)
+
+
+  def testSchemaReaderMultipleSchemaFiles(self):
+    schema_path = os.path.join(self._base_dir, 'schema_path')
+    schema_file_path1 = os.path.join(schema_path, 'schema1.pbtxt')
+    schema_file_path2 = os.path.join(schema_path, 'schema2.pbtxt')
+    io_utils.write_string_file(schema_file_path1, "feature { name: 'test'}")
+    io_utils.write_string_file(schema_file_path2, "feature { name: 'test'}")
+    with self.assertRaisesRegexp(
+      RuntimeError,
+      f'Only one file per dir is supported: {schema_path}/\*.pbtxt.'):
+        io_utils.SchemaReader().read(schema_file_path1)
+
+    with self.assertRaisesRegexp(
+      RuntimeError,
+      f'Only one file per dir is supported: {schema_path}/\*.'):
+        io_utils.SchemaReader().read(schema_path)
+
+  def testSchemaReaderMultipleFilesOneWithExtension(self):
+    schema_path = os.path.join(self._base_dir, 'schema_path')
+    schema_file_path = os.path.join(schema_path, 'schema.pbtxt')
+    other_file_path1 = os.path.join(schema_path, 'other_file1')
+    other_file_path2 = os.path.join(schema_path, 'other_file2')
+    io_utils.write_string_file(schema_file_path, "feature { name: 'test'}")
+    io_utils.write_string_file(other_file_path1, "test1")
+    io_utils.write_string_file(other_file_path2, "test2")
+
+    schema_proto_from_file = io_utils.SchemaReader().read(schema_file_path)
+    self.assertEqual('test', schema_proto_from_file.feature[0].name)
+
+    with self.assertRaisesRegexp(
+      RuntimeError,
+      f'Only one file per dir is supported: {schema_path}/\*.'):
+        io_utils.SchemaReader().read(schema_path)
+
+  def testSchemaReaderMultipleFilesNoExtension(self):
+    schema_path = os.path.join(self._base_dir, 'schema_path')
+    schema_file_path = os.path.join(schema_path, 'schema')
+    other_file_path = os.path.join(schema_path, 'other_file')
+    io_utils.write_string_file(schema_file_path, "feature { name: 'test'}")
+    io_utils.write_string_file(other_file_path, "test")
 
 
 if __name__ == '__main__':

@@ -198,6 +198,8 @@ def read_string_file(file_name: Text) -> Text:
   return file_io.read_file_to_string(file_name)
 
 
+SCHEMA_FILE_EXTENSION = ".pbtxt"
+
 class SchemaReader(object):
   """Schema reader."""
 
@@ -210,8 +212,10 @@ class SchemaReader(object):
     Returns:
       A tf.metadata schema.
     """
-
     result = schema_pb2.Schema()
-    contents = file_io.read_file_to_string(schema_path)
-    text_format.Parse(contents, result)
-    return result
+    if schema_path.endswith(SCHEMA_FILE_EXTENSION):
+      schema_uri = get_only_uri_in_dir(os.path.dirname(schema_path),
+                                       f'*{SCHEMA_FILE_EXTENSION}')
+    else:
+      schema_uri = get_only_uri_in_dir(schema_path)
+    return parse_pbtxt_file(schema_uri, result)
