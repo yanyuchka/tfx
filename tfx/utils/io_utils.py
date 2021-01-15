@@ -81,13 +81,16 @@ def copy_dir(src: Text, dst: Text) -> None:
 def get_only_uri_in_dir(dir_path: Text, uri_pattern: Text = None) -> Text:
   """Gets the only uri from given directory.
     If no `uri_pattern` specified, a single file is expected to be found
-    in `dir_path`.
+    under `dir_path`.
   """
-
-  if uri_pattern is None:
-    uri_path = all_files_pattern(dir_path)
+  if fileio.isdir(dir_path):
+    dir_path = dir_path.rstrip('/')
+    if uri_pattern is None:
+      uri_path = all_files_pattern(dir_path)
+    else:
+      uri_path = files_pattern(dir_path, uri_pattern)
   else:
-    uri_path = files_pattern(dir_path, uri_pattern)
+    uri_path = dir_path
 
   files = fileio.glob(uri_path)
   if len(files) != 1:

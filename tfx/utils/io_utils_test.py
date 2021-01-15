@@ -114,8 +114,8 @@ class IoUtilsTest(tf.test.TestCase):
     io_utils.write_string_file(another_file_path, 'testing')
     with self.assertRaisesRegexp(
       RuntimeError,
-      f'Only one file per dir is supported: {dir_path}.'):
-      io_utils.get_only_uri_in_dir(dir_path)
+      f'Only one file per dir is supported: {dir_path}/*.'):
+        io_utils.get_only_uri_in_dir(dir_path)
 
   def testGetOnlyFileInDirMultipleFilesWithPattern(self):
     dir_path = os.path.join(self._base_dir, 'path')
