@@ -37,7 +37,6 @@ from tfx.utils import io_utils
 from tfx.utils import path_utils
 
 from tensorflow.python.lib.io import file_io  # pylint: disable=g-direct-tensorflow-import
-from tensorflow_metadata.proto.v0 import schema_pb2
 
 
 TrainerFnArgs = deprecation_utils.deprecated_alias(  # pylint: disable=invalid-name
@@ -245,8 +244,6 @@ class Executor(GenericExecutor):
     fn_args = self._GetFnArgs(input_dict, output_dict, exec_properties)
     trainer_fn = udf_utils.get_fn(exec_properties, 'trainer_fn')
 
-    schema = io_utils.parse_pbtxt_file(fn_args.schema_file, schema_pb2.Schema())
-
     # TODO(b/160795287): Deprecate estimator based executor.
     # Provide user with a modified fn_args, with model_run given as
     # the working directory. Executor will then copy user models to
@@ -258,7 +255,8 @@ class Executor(GenericExecutor):
     fn_args.serving_model_dir = path_utils.serving_model_dir(working_dir)
     fn_args.eval_model_dir = path_utils.eval_model_dir(working_dir)
 
-    training_spec = trainer_fn(fn_args, schema)
+    training_spec = trainer_fn(fn_args, io_utils.SchemaReader().read(
+        fn_args.schema_path))
 
     # Train the model
     absl.logging.info('Training model.')

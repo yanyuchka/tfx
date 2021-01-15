@@ -108,9 +108,9 @@ def get_common_fn_args(input_dict: Dict[Text, List[types.Artifact]],
   else:
     transform_graph_path = None
 
-  if input_dict.get(constants.SCHEMA_KEY):
-    schema_path = io_utils.get_only_uri_in_dir(
-        artifact_utils.get_single_uri(input_dict[constants.SCHEMA_KEY]))
+  schema = input_dict.get(constants.SCHEMA_KEY)
+  if schema is not None:
+    schema_path = artifact_utils.get_single_uri(schema)
   else:
     schema_path = None
 

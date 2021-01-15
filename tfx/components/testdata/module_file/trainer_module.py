@@ -34,7 +34,6 @@ from tfx.components.trainer import executor
 from tfx.utils import io_utils
 from tfx.utils import path_utils
 from tfx_bsl.public.tfxio import TensorFlowDatasetOptions
-from tensorflow_metadata.proto.v0 import schema_pb2
 
 
 # Categorical features are assumed to each have a maximum value in the dataset.
@@ -323,9 +322,8 @@ def run_fn(fn_args: executor.TrainerFnArgs):
   Args:
     fn_args: Holds args used to train the model as name/value pairs.
   """
-  schema = io_utils.parse_pbtxt_file(fn_args.schema_file, schema_pb2.Schema())
-
-  training_spec = trainer_fn(fn_args, schema)
+  training_spec = trainer_fn(fn_args, io_utils.SchemaReader().read(
+      fn_args.schema_path))
 
   # Train the model
   absl.logging.info('Training model.')

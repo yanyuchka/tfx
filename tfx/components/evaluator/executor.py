@@ -186,10 +186,10 @@ class Executor(base_executor.BaseExecutor):
 
     eval_shared_model = models[0] if len(models) == 1 else models
     schema = None
-    if constants.SCHEMA_KEY in input_dict:
+    schema_path = input_dict.get(constants.SCHEMA_KEY)
+    if schema_path is not None:
       schema = io_utils.SchemaReader().read(
-          io_utils.get_only_uri_in_dir(
-              artifact_utils.get_single_uri(input_dict[constants.SCHEMA_KEY])))
+              artifact_utils.get_single_uri(schema_path))
 
     # Load and deserialize example splits from execution properties.
     example_splits = json_utils.loads(

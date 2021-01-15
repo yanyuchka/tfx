@@ -96,8 +96,7 @@ class Executor(base_executor.BaseExecutor):
         split_names)
 
     schema = io_utils.SchemaReader().read(
-        io_utils.get_only_uri_in_dir(
-            artifact_utils.get_single_uri(input_dict[SCHEMA_KEY])))
+            artifact_utils.get_single_uri(input_dict[SCHEMA_KEY]))
 
     for split in artifact_utils.decode_split_names(stats_artifact.split_names):
       if split in exclude_splits:

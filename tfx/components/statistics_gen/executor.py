@@ -110,17 +110,15 @@ class Executor(base_executor.BaseExecutor):
       # TODO(b/150802589): Move jsonable interface to tfx_bsl and use
       # json_utils
       stats_options = options.StatsOptions.from_json(stats_options_json)
-    if input_dict.get(SCHEMA_KEY):
+    schema_path = input_dict.get(SCHEMA_KEY)
+    if schema_path is not None:
       if stats_options.schema:
         raise ValueError('A schema was provided as an input and the '
                          'stats_options exec_property also contains a schema '
                          'value. At most one of these may be set.')
       else:
-        schema = io_utils.SchemaReader().read(
-            io_utils.get_only_uri_in_dir(
-                artifact_utils.get_single_uri(input_dict[SCHEMA_KEY])))
-        stats_options.schema = schema
-
+        stats_options.schema = io_utils.SchemaReader().read(
+                artifact_utils.get_single_uri(schema_path))
     split_and_tfxio = []
     tfxio_factory = tfxio_utils.get_tfxio_factory_from_artifact(
         examples=[examples],

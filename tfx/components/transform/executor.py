@@ -354,7 +354,7 @@ class Executor(base_executor.BaseExecutor):
     payload_format, data_view_uri = (
         tfxio_utils.resolve_payload_format_and_data_view_uri(
             input_dict[EXAMPLES_KEY]))
-    schema_file = io_utils.get_only_uri_in_dir(
+    schema_path = io_utils.get_only_uri_in_dir(
         artifact_utils.get_single_uri(input_dict[SCHEMA_KEY]))
     transform_output = artifact_utils.get_single_uri(
         output_dict[TRANSFORM_GRAPH_KEY])
@@ -407,7 +407,7 @@ class Executor(base_executor.BaseExecutor):
         labels.COMPUTE_STATISTICS_LABEL:
             False,
         labels.SCHEMA_PATH_LABEL:
-            schema_file,
+            schema_path,
         labels.EXAMPLES_DATA_FORMAT_LABEL:
             payload_format,
         labels.DATA_VIEW_LABEL:
