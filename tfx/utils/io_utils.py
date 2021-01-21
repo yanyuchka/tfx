@@ -167,7 +167,7 @@ def tfrecord_files_pattern(files_path: Text):
 
 def all_files_pattern(files_path: Text) -> Text:
   """Returns file pattern to locate all files under `files_path`."""
-  return files_pattern(files_path, "*")
+  return files_pattern(files_path, '*')
 
 
 def generate_fingerprint(split_name: Text, file_pattern: Text) -> Text:
