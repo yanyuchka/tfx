@@ -143,8 +143,12 @@ class IoUtilsTest(tf.test.TestCase):
     self.assertFalse(fileio.exists(file_path))
 
   def testFilesPattern(self):
-    self.assertEqual('model/*tfrecord*',
+    self.assertEqual('model',
                      io_utils.files_pattern('model'))
+    self.assertEqual('model/',
+                     io_utils.files_pattern('model/'))
+    self.assertEqual('model/pattern',
+                     io_utils.files_pattern('model/', 'pattern'))
     self.assertEqual('model/pattern',
                      io_utils.files_pattern('model', 'pattern'))
 

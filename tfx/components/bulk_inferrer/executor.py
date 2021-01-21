@@ -50,7 +50,7 @@ def _RunInference(
   return (
       pipeline
       | 'ReadData' >> beam.io.ReadFromTFRecord(
-          file_pattern=io_utils.files_pattern(example_uri))
+          file_pattern=io_utils.tfrecord_files_pattern(example_uri))
       # TODO(b/131873699): Use the correct Example type here, which
       # is either Example or SequenceExample.
       | 'ParseExamples' >> beam.Map(tf.train.Example.FromString)

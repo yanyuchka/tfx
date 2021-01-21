@@ -84,7 +84,6 @@ def get_only_uri_in_dir(dir_path: Text, uri_pattern: Text = None) -> Text:
     under `dir_path`.
   """
   if fileio.isdir(dir_path):
-    dir_path = dir_path.rstrip('/')
     if uri_pattern is None:
       uri_path = all_files_pattern(dir_path)
     else:
@@ -155,16 +154,20 @@ def load_csv_column_names(csv_file: Text) -> List[Text]:
 def files_pattern(files_path: Text,
                   pattern: Text = None) -> Text:
   """Returns file paths suitable for Beam to locate files based on a pattern.
-       file_path/*tfrecord* file path pattern will be returned by default.
+       unchanged `files_path` will be returned by default.
   """
   if pattern is None:
-    pattern = TFRECORD_FILES_PATTERN
-  return os.path.join(files_path, pattern)
+    return files_path
+  else:
+    return os.path.join(files_path.rstrip('/'), pattern)
 
+def tfrecord_files_pattern(files_path: Text):
+  """Returns file pattern to locate tfrecord files under `files_path`."""
+  return files_pattern(files_path, TFRECORD_FILES_PATTERN)
 
 def all_files_pattern(files_path: Text) -> Text:
-  """Returns file pattern suitable for Beam to locate multiple files."""
-  return files_pattern(files_path, '*')
+  """Returns file pattern to locate all files under `files_path`."""
+  return files_pattern(files_path, "*")
 
 
 def generate_fingerprint(split_name: Text, file_pattern: Text) -> Text:

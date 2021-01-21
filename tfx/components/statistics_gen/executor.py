@@ -131,7 +131,7 @@ class Executor(base_executor.BaseExecutor):
 
       uri = os.path.join(examples.uri, split)
       split_and_tfxio.append(
-          (split, tfxio_factory(io_utils.files_pattern(uri))))
+          (split, tfxio_factory(io_utils.tfrecord_files_pattern(uri))))
     with self._make_beam_pipeline() as p:
       for split, tfxio in split_and_tfxio:
         logging.info('Generating statistics for split %s.', split)

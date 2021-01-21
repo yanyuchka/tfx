@@ -215,7 +215,7 @@ class Executor(base_executor.BaseExecutor):
             raw_record_column_name=tfma_constants.ARROW_INPUT_COLUMN)
         # TODO(b/161935932): refactor after TFXIO supports multiple patterns.
         for split in example_splits:
-          file_pattern = io_utils.files_pattern(
+          file_pattern = io_utils.tfrecord_files_pattern(
               artifact_utils.get_split_uri(input_dict[constants.EXAMPLES_KEY],
                                            split))
           tfxio = tfxio_factory(file_pattern)
@@ -230,7 +230,7 @@ class Executor(base_executor.BaseExecutor):
               tensor_representations=tfxio.TensorRepresentations())
       else:
         for split in example_splits:
-          file_pattern = io_utils.files_pattern(
+          file_pattern = io_utils.tfrecord_files_pattern(
               artifact_utils.get_split_uri(input_dict[constants.EXAMPLES_KEY],
                                            split))
           data = (
