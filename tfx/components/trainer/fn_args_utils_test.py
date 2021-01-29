@@ -73,8 +73,7 @@ class FnArgsUtilsTest(tf.test.TestCase):
     self.assertLen(fn_args.eval_files, 1)
     self.assertEqual(fn_args.eval_files[0],
                      os.path.join(examples.uri, 'eval', '*'))
-    self.assertEqual(fn_args.schema_path,
-                     os.path.join(schema.uri, 'schema.pbtxt'))
+    self.assertEqual(fn_args.schema_path, schema.uri)
     self.assertEqual(fn_args.transform_graph_path, transform_output.uri)
     self.assertIsInstance(fn_args.data_accessor, fn_args_utils.DataAccessor)
 
