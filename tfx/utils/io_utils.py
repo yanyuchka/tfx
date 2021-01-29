@@ -94,7 +94,7 @@ def get_only_uri_in_dir(dir_path: Text, uri_pattern: Text = None) -> Text:
   files = fileio.glob(uri_path)
   if len(files) != 1:
     raise RuntimeError(
-      'Only one file per dir is supported: {}.'.format(uri_path))
+      'Only one artifact file per dir is supported: {}.'.format(uri_path))
   filename = os.path.dirname(os.path.join(files[0], ''))
   return os.path.join(uri_path, filename)
 
