@@ -115,7 +115,7 @@ class IoUtilsTest(tf.test.TestCase):
     with self.assertRaisesRegexp(
       RuntimeError,
       f'Only one file per dir is supported: {dir_path}/*.'):
-        io_utils.get_only_uri_in_dir(dir_path)
+      io_utils.get_only_uri_in_dir(dir_path)
 
   def testGetOnlyFileInDirMultipleFilesWithPattern(self):
     dir_path = os.path.join(self._base_dir, 'path')
@@ -143,14 +143,12 @@ class IoUtilsTest(tf.test.TestCase):
     self.assertFalse(fileio.exists(file_path))
 
   def testFilesPattern(self):
-    self.assertEqual('model',
-                     io_utils.files_pattern('model'))
-    self.assertEqual('model/',
-                     io_utils.files_pattern('model/'))
     self.assertEqual('model/pattern',
                      io_utils.files_pattern('model/', 'pattern'))
     self.assertEqual('model/pattern',
                      io_utils.files_pattern('model', 'pattern'))
+    self.assertEqual('model/pattern',
+                     io_utils.files_pattern('model///', 'pattern'))
 
   def testAllFilesPattern(self):
     self.assertEqual('model/*', io_utils.all_files_pattern('model'))

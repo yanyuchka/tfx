@@ -151,15 +151,11 @@ def load_csv_column_names(csv_file: Text) -> List[Text]:
     return f.readline().strip().split(',')
 
 
-def files_pattern(files_path: Text,
-                  pattern: Text = None) -> Text:
+def files_pattern(files_path: Text, pattern: Text) -> Text:
   """Returns file paths suitable for Beam to locate files based on a pattern.
-       unchanged `files_path` will be returned by default.
+    `files_path/pattern` will be returned by default.
   """
-  if pattern is None:
-    return files_path
-  else:
-    return os.path.join(files_path.rstrip('/'), pattern)
+  return os.path.join(files_path.rstrip('/'), pattern)
 
 def tfrecord_files_pattern(files_path: Text):
   """Returns file pattern to locate tfrecord files under `files_path`."""
